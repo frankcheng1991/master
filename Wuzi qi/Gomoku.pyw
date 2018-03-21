@@ -32,7 +32,7 @@ class App(Frame):
         Frame.__init__(self, master, *pargs)
         self.master.title("Gomoku Game")
         self.tags = [] # this is to store tags
-        self.image = Image.open("C:\Users\Zhixiong Cheng\OneDrive\Documents\GitHub Projects\Wuzi qi\game.gif")
+        self.image = Image.open("game.gif")
         self.img_copy= self.image.copy()
 
         self.background_image = ImageTk.PhotoImage(self.image)
