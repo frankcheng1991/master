@@ -12,8 +12,8 @@ print d.get('monkey', 'N/A') #  Get an element with a default; prints "N/A"
 
 '''
 Numpy
-It provides a high-performance multidimensional array object,
-	and tools for working with these arrays.
+Numpy provides a high-performance multidimensional array 
+	and basic tools to compute with and manipulate these arrays. 
 '''
 
 import numpy as np 
@@ -80,13 +80,26 @@ print i
 j = np.indices((2, 4))
 print j
 
-#------------------ Part 1 : Array indexing ------------------------#
+#------------------ Part 2 : Array indexing ------------------------#
 # Full indexing url: https://docs.scipy.org/doc/numpy/reference/arrays.indexing.html
-# 1st way: Slicing
+# 1st way: Slicing (basic indexing) -> start:stop:step; output not include stop; when step negative, reverse
+	## index for array: [0, 1, 2, 3, ..., -3, -2, -1]
 a = np.array([[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]]) # create 3x4 matrix, 2 "[" means 2 d
 b = a[:2, 1:3] # take row 0, row 1; column 1 and column2 -> 2 by 2 2d matrix
 print b
 print a[0, 1]
+
+c = np.array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+print c[1:7:2] # start:stop:step
+print c[-2: 10]
+print c[-3: 3: -1] # reverse
+
+d = np.array([[[1], [2], [3]], [[4], [5], [6]]])
+d[1:2] # If the number of objects in the selection tuple is less than N , then : is assumed for any subsequent dimensions.
+d[..., 0] # Ellipsis expand to the number of : objects needed to make a selection tuple of the same length as x.ndim. 
+			#There may only be a single ellipsis present. It equals to d[:, :, 0]
+d[..., 0].flatten()
+d[:, np.newaxis, :, :] # Each newaxis object in the selection tuple serves to expand the dimensions of the resulting selection by one unit-length dimension. The added dimension is the position of the newaxis object in the selection tuple.
 
 '''
 Two ways of accessing the data in the middle row of the array.
@@ -104,10 +117,24 @@ col_r2 = a[:, 1:2]
 print col_r1, col_r1.shape
 print col_r2, col_r2.shape
 
-# 2nd way: Integer array indexing
+# 2nd way: Integer array indexing (advanced indexing)
+'''
+a = np.array([
+				[1,2,3],
+				[4,5,6],
+				[7,8,9],
+				[10,11,12]
+			]) # 2d array: row = 4, column = 3
+basic indexing example:
+a[(0, 1)] # equals to a[0, 1]
+a[[0, slice(None)]]
+advanced indexing example:
+a[(0, 1), ]
+a[[0, 1]]
+'''
 a = np.array([[1, 2], [3, 4], [5, 6]])
 print a[[0, 1, 2], [0, 1, 0]] # The above example of integer array indexing is equivalent to this:
-print np.array([a[0, 0], a[1, 1], a[2, 0]])
+print np.array([a[0, 0], a[1, 1], a[2, 0]]) # this is the basic indexing
 print a[[0, 1, 2], [0, 1, 0]].shape
 
 print a[[0, 0], [1, 1]]
@@ -119,6 +146,17 @@ b = np.array([0, 2, 0, 1]) # # Create an array of indices
 print a[np.arange(4), b] # Select one element from each row of a using the indices in b
 a[np.arange(4), b] += 10 # Mutate one element from each row of a using the indices in b
 print a
+		# Another example for broadcasting -> url: https://docs.scipy.org/doc/numpy/reference/ufuncs.html#ufuncs-broadcasting
+a = np.array([
+		[0, 1, 2],
+		[3, 4, 5],
+		[6, 7, 8],
+		[9, 10, 11]
+	])
+rows = np.array([0, 3], dtype = np.intp)
+columns = np.array([0, 2], dtype = np.intp)
+print a[rows[:, np.newaxis], columns]
+print a[np.ix_(rows, columns)]
 
 # 3rd way: Boolean array indexing:
 '''
@@ -142,3 +180,91 @@ of bool_idx
 '''
 print a[bool_idx] # We can do all of the above in a single concise statement:
 print a[a > 2]
+		# Care must only be taken to make sure that the boolean index has exactly as many dimensions as it is supposed to work with.
+x = np.array([
+		[0, 1],
+		[1, 1],
+		[2, 2]
+	])
+# sum(x) or x.sum() -> sum everything 
+# columnsum = x.sum(axis = 0)
+rowsum = x.sum(-1) # or x.sum(1)
+x[rowsum <= 2, :]
+
+rowsum = x.sum(-1, keepdims = True) # If this is set to True, the axes which are reduced are left in the result as dimensions with size one. With this option, the result will broadcast correctly against the input array.
+#x[rowsum <= 2]
+
+rows = (x.sum(-1) % 2) == 0
+columns = [0, 2]
+#x[np.ix_(rows, columns)]
+
+#------------------ Part 3 : Datatypes ------------------------#
+# full data types introduction: https://docs.scipy.org/doc/numpy/reference/arrays.dtypes.html
+
+x = np.array([1, 2], dtype = np.int64)
+
+#------------------ Part 4 : Array math ------------------------#
+## full math functions: url = https://docs.scipy.org/doc/numpy/reference/routines.math.html
+## Here are other array mulnipulation: url = https://docs.scipy.org/doc/numpy/reference/routines.array-manipulation.html
+x = np.array([[1, 2], [3, 4]], dtype = np.float64) # 2d matrix
+y = np.array([[5, 6], [7, 8]], dtype = np.float64) # 2d matrix
+
+v = np.array([9, 10]) # 1d array
+w = np.array([11, 12]) # 2d array
+## +
+print x + y
+print np.add(x, y)
+## -
+print x - y
+print np.subtract(x, y)
+## * : not matrix maltiplication, just elementwise product:
+print x * y
+print np.multiply(x, y)
+## /:
+print x / y
+print np.divide(x, y)
+## root square:
+print x ** 0.5
+print np.sqrt(x)
+## use 'dot' to compute the inner product of vectors
+print x.dot(y) # alternative way below:
+print np.dot(x, y)
+print v.dot(w) # for vectors to compute inner product; while v*w compute elementwise product
+print np.dot(v, x)
+## sum
+print x.shape # (row, column)
+print np.sum(x) # sum of all element
+print np.sum(x, axis = 0) # sum of each column
+print np.sum(x, axis = 1) # sum of each row
+## use 'T' to transpose 
+print x.T
+print v.T # Note that taking the transpose of a rank 1 array does nothing, convert it to rank 2 first:
+v2 = v[np.newaxis, :]
+print v2.T
+
+#------------------ Part 5 : Broadcasting ------------------------#
+## URl = https://docs.scipy.org/doc/numpy/user/basics.broadcasting.html
+## add the vector v to each row of the matrix x:
+x = np.arange(1, 13).reshape(4,3)
+v = np.array([1, 0, 1])
+vv = np.tile(v, (4, 1)) # Stack 4 copies of v on top of each other
+print vv
+y = x + vv
+print y
+## numpy broadcasting allow us to perform this computation without actually creating multiple copies of v. Consider this version, using broadcasting:
+y = x + v # Add v to each row of x using broadcasting
+print y
+'''
+Explanation:
+The line y = x + v works even though x has shape (4, 3) and v has shape (3,) 
+due to broadcasting; this line works as if v actually had shape (4, 3), 
+where each row was a copy of v, and the sum was performed elementwise.
+Broadcasting two arrays together follows these rules:
+
+1. If the arrays do not have the same rank, prepend the shape of the lower rank array with 1s until both shapes have the same length.
+2. The two arrays are said to be compatible in a dimension if they have the same size in the dimension, or if one of the arrays has size 1 in that dimension.
+3. The arrays can be broadcast together if they are compatible in all dimensions.
+4. After broadcasting, each array behaves as if it had shape equal to the elementwise maximum of shapes of the two input arrays.
+5. In any dimension where one array had size 1 and the other array had size greater than 1, the first array behaves as if it were copied along that dimension
+'''
+## in broadcasting, shape(3, ) equals to shape(1, 3); stretching must be from 1 -> n

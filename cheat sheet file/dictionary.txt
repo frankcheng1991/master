@@ -1,0 +1,24 @@
+basic Numpy and Scipy
+http://cs231n.github.io/python-numpy-tutorial/
+
+Numpy:
+https://docs.scipy.org/doc/numpy/reference/
+Scipy:
+https://docs.scipy.org/doc/scipy/reference/index.html
+Matplotlib:
+https://matplotlib.org/tutorials/index.html
+Pandas:
+http://pandas.pydata.org/pandas-docs/version/0.17.0/pandas.pdf
+Seaborn:
+Datetime:
+
+OpenCV: an Image Processing library by Intel (C, C++ and Python), focused on real-time image processing; is an open source computer vision library, which is used for visual analysis of images or videos. It was first introduced in 2000. It has a plethora of algorithms that are used for visual recognition and perception tasks. It has C++, C, Python and Java interfaces and supports Windows, Linux, Mac OS, iOS and Android. OpenCV was designed for computational efficiency and with a strong focus on real-time applications. Written in optimized C/C++, the library can take advantage of multi-core processing. Enabled with OpenCL, it can take advantage of the hardware acceleration of the underlying heterogeneous compute platform.
+
+OpenGL: is a 3D graphics rendering libraryl; Is an Open Source Graphics Library. Precisely, if you want to create computer generated objects both in 3D, this is what you use. Since its inception in 1992, OpenGL has become the industry's most widely used and supported 2D and 3D graphics application programming interface (API), bringing thousands of applications to a wide variety of computer platforms.
+
+OpenCL on the other hand, is an open source parallel computing library (Open Computing Library) maintained by Khronos and treated as a standard for parallel computing across heterogeneous computing environments (CPU, GPU, FPGA, DSPs etc.)
+
+Tkinter:
+Pygame:
+
+
